@@ -38,23 +38,25 @@ The M2 reference agent was run 40 times live (20 spaced, 20 back to back). Every
 
 A UI preview of the dashboard is in `sakshya/dashboard/static/index.html`. Open the file in a browser; it needs no server.
 
-**This preview uses static sample data.** It shows the planned layout and views. Every figure in it is a placeholder until M7 connects the views to the trace DB, at which point each number will be a query run at request time and an empty DB will show empty states.
+**This preview uses static sample data.** It shows the planned layout and views, filled with generated sample sessions so the layout can be judged at realistic volume. Every figure in it is a placeholder until M7 connects the views to the trace DB, at which point each number will be a query run at request time and an empty DB will show empty states.
+
+![Overview](docs/screenshots/overview.png)
 
 | Sessions | Session detail |
 | --- | --- |
 | ![Sessions](docs/screenshots/sessions.png) | ![Session detail](docs/screenshots/detail.png) |
 
-| Incident view | Chain integrity |
+| Incidents | Chain integrity |
 | --- | --- |
-| ![Incident view](docs/screenshots/incident.png) | ![Chain integrity](docs/screenshots/chain.png) |
+| ![Incidents](docs/screenshots/incidents.png) | ![Chain integrity](docs/screenshots/chain.png) |
 
 | Attestation | Dry-run report |
 | --- | --- |
 | ![Attestation](docs/screenshots/attestation.png) | ![Dry-run report](docs/screenshots/dryrun.png) |
 
-Light theme:
+Dark theme:
 
-![Sessions, light theme](docs/screenshots/sessions-light.png)
+![Overview, dark theme](docs/screenshots/overview-dark.png)
 
 ## Repository layout
 
