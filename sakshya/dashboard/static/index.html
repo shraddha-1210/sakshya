@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAKSHYA Dashboard</title>
+<style>
+:root {
+  --bg: #0d0a17; --bg-2: #141022; --panel: #1a1530; --panel-2: #221b3d;
+  --line: #2f2652; --text: #ece8fb; --muted: #9d94c2; --faint: #6c638f;
+  --violet: #8b5cf6; --violet-2: #a78bfa; --violet-3: #c4b5fd;
+  --ok: #34d399; --warn: #fbbf24; --bad: #f87171;
+  --ok-bg: rgba(52,211,153,.12); --warn-bg: rgba(251,191,36,.12); --bad-bg: rgba(248,113,113,.12);
+  --glow: rgba(139,92,246,.28);
+}
+:root[data-theme="light"] {
+  --bg: #f6f4fd; --bg-2: #efebfb; --panel: #ffffff; --panel-2: #f3f0fc;
+  --line: #e0daf5; --text: #1d1636; --muted: #5f5688; --faint: #8c84ad;
+  --violet: #7c3aed; --violet-2: #6d28d9; --violet-3: #5b21b6;
+  --ok: #059669; --warn: #b45309; --bad: #dc2626;
+  --ok-bg: rgba(5,150,105,.1); --warn-bg: rgba(180,83,9,.1); --bad-bg: rgba(220,38,38,.1);
+  --glow: rgba(124,58,237,.14);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg); color: var(--text);
+  font: 14px/1.5 "Segoe UI", system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+}
+body::before {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(600px 400px at 85% -10%, var(--glow), transparent 70%),
+    radial-gradient(500px 360px at 10% 110%, var(--glow), transparent 70%);
+}
+.app { position: relative; z-index: 1; display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+aside {
+  background: var(--bg-2); border-right: 1px solid var(--line);
+  padding: 22px 14px; display: flex; flex-direction: column; gap: 4px;
+}
+.brand { display: flex; align-items: center; gap: 10px; padding: 0 10px 20px; }
+.brand-mark {
+  width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center;
+  background: linear-gradient(135deg, var(--violet), #5b21b6); color: #fff; font-weight: 700;
+  box-shadow: 0 0 18px var(--glow);
+}
+.brand b { font-size: 16px; letter-spacing: .14em; }
+.brand small { display: block; color: var(--faint); font-size: 11px; letter-spacing: .02em; }
+nav button {
+  width: 100%; text-align: left; background: none; border: 0; color: var(--muted);
+  padding: 9px 12px; border-radius: 8px; font: inherit; cursor: pointer;
+  display: flex; align-items: center; gap: 10px;
+}
+nav button:hover { background: var(--panel); color: var(--text); }
+nav button.active { background: var(--panel-2); color: var(--text); box-shadow: inset 3px 0 0 var(--violet); }
+nav svg { width: 16px; height: 16px; flex: none; }
+.side-foot { margin-top: auto; padding: 12px; color: var(--faint); font-size: 12px; }
+.theme-btn {
+  margin-top: 8px; width: 100%; padding: 7px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--panel); color: var(--muted); font: inherit; cursor: pointer;
+}
+main { padding: 26px 32px 48px; min-width: 0; }
+.banner {
+  border: 1px dashed var(--warn); background: var(--warn-bg); color: var(--warn);
+  padding: 8px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 20px;
+}
+h1 { font-size: 22px; margin: 0 0 4px; font-weight: 600; }
+.sub { color: var(--muted); margin: 0 0 22px; }
+.grid { display: grid; gap: 14px; }
+.kpis { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 18px; }
+.card {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px;
+}
+.kpi .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+.kpi .value { font-size: 26px; font-weight: 600; margin-top: 4px; font-variant-numeric: tabular-nums; }
+.kpi .note { color: var(--faint); font-size: 12px; }
+.card h2 { font-size: 14px; margin: 0 0 12px; font-weight: 600; }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { color: var(--faint); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
+tbody tr:hover { background: var(--panel-2); }
+tbody tr.click { cursor: pointer; }
+.table-wrap { overflow-x: auto; }
+.mono { font-family: Consolas, "Cascadia Mono", monospace; font-size: 12.5px; }
+.pill { display: inline-block; padding: 1px 9px; border-radius: 999px; font-size: 12px; font-weight: 500; }
+.p-allow, .p-ok { color: var(--ok); background: var(--ok-bg); }
+.p-gate, .p-warn { color: var(--warn); background: var(--warn-bg); }
+.p-block, .p-bad { color: var(--bad); background: var(--bad-bg); }
+.p-neutral { color: var(--violet-2); background: var(--glow); }
+.timeline { position: relative; padding-left: 22px; }
+.timeline::before { content: ""; position: absolute; left: 6px; top: 4px; bottom: 4px; width: 2px; background: var(--line); }
+.ev { position: relative; padding: 0 0 18px; }
+.ev::before {
+  content: ""; position: absolute; left: -21px; top: 5px; width: 12px; height: 12px; border-radius: 50%;
+  background: var(--panel); border: 2px solid var(--violet);
+}
+.ev.gate::before { border-color: var(--warn); background: var(--warn); }
+.ev-head { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.ev-meta { color: var(--muted); font-size: 12.5px; margin-top: 3px; }
+.bar { display: flex; height: 8px; border-radius: 6px; overflow: hidden; background: var(--panel-2); margin-top: 6px; max-width: 320px; }
+.bar span { display: block; }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; color: var(--muted); font-size: 12px; margin-top: 8px; }
+.legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 5px; vertical-align: middle; }
+.two { grid-template-columns: 1.4fr 1fr; }
+.btn {
+  background: linear-gradient(135deg, var(--violet), #6d28d9); color: #fff; border: 0;
+  padding: 9px 16px; border-radius: 8px; font: inherit; font-weight: 500; cursor: pointer;
+  box-shadow: 0 0 16px var(--glow);
+}
+.btn.ghost { background: var(--panel-2); color: var(--text); border: 1px solid var(--line); box-shadow: none; }
+.verify-out { margin-top: 14px; }
+.big-status { display: flex; align-items: center; gap: 12px; font-size: 18px; font-weight: 600; }
+.dot { width: 12px; height: 12px; border-radius: 50%; }
+.frac { font-size: 26px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.frac small { font-size: 14px; color: var(--muted); font-weight: 400; }
+.hbar { height: 10px; border-radius: 6px; background: var(--panel-2); overflow: hidden; margin-top: 8px; }
+.hbar span { display: block; height: 100%; background: linear-gradient(90deg, var(--violet), var(--violet-3)); }
+.kv { display: grid; grid-template-columns: 160px 1fr; gap: 6px 12px; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; }
+select {
+  background: var(--panel-2); color: var(--text); border: 1px solid var(--line); border-radius: 8px;
+  padding: 6px 10px; font: inherit;
+}
+.row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+@media (max-width: 860px) {
+  .app { grid-template-columns: 1fr; }
+  aside { flex-direction: row; overflow-x: auto; padding: 10px 16px; border-right: 0; border-bottom: 1px solid var(--line); }
+  .brand, .side-foot { display: none; }
+  nav { display: flex; gap: 4px; }
+  nav button { white-space: nowrap; }
+  main { padding: 18px 16px 40px; }
+  .two { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand">
+      <div class="brand-mark">S</div>
+      <div><b>SAKSHYA</b><small>evidence and authority control</small></div>
+    </div>
+    <nav id="nav"></nav>
+    <div class="side-foot">
+      Agent: claims-triage-v1<br>Mode: enforce
+      <button class="theme-btn" id="theme">Toggle theme</button>
+    </div>
+  </aside>
+  <main id="view"></main>
+</div>
+
+<script>
+// PREVIEW DATA. Static sample values for the UI preview. The live dashboard (M7)
+// replaces every figure below with queries against the trace DB at request time.
+const DATA = {
+  sessions: [
+    { id: "s-7f3a91", agent: "claims-triage-v1", principal: "adjuster-7", claim: "C-1003",
+      started: "2026-10-18 11:42:07", calls: 4, gates: 1, chain: "intact" },
+    { id: "s-52c0de", agent: "claims-triage-v1", principal: "adjuster-7", claim: "C-1001",
+      started: "2026-10-18 11:31:55", calls: 4, gates: 0, chain: "intact" },
+    { id: "s-19be44", agent: "claims-triage-v1", principal: "adjuster-3", claim: "C-1002",
+      started: "2026-10-18 11:20:13", calls: 3, gates: 0, chain: "intact" },
+    { id: "s-a0d27c", agent: "claims-triage-v1", principal: "adjuster-3", claim: "C-1003",
+      started: "2026-10-18 10:58:40", calls: 4, gates: 1, chain: "intact" },
+    { id: "s-e61b08", agent: "claims-triage-v1", principal: "adjuster-7", claim: "C-1001",
+      started: "2026-10-18 10:44:02", calls: 4, gates: 0, chain: "intact" },
+  ],
+  detail: {
+    "s-7f3a91": [
+      { t: "11:42:08.114", tool: "read_claim_document", verdict: "allow", rule: "R-0 not consequential",
+        mix: { internal_trusted: 1, tool_output: 1, external_untrusted: 1, user: 1 }, snapshot: ["k-0003"] },
+      { t: "11:42:10.502", tool: "get_policy_record", verdict: "allow", rule: "R-0 not consequential",
+        mix: { internal_trusted: 1, tool_output: 2, external_untrusted: 1, user: 1 }, snapshot: ["k-0003"] },
+      { t: "11:42:13.877", tool: "approve_settlement", verdict: "gate", rule: "R-1 untrusted x payment",
+        mix: { internal_trusted: 1, tool_output: 2, external_untrusted: 1, user: 1 }, snapshot: ["k-0003"] },
+      { t: "11:42:16.240", tool: "send_email", verdict: "allow", rule: "R-2 recipient on record",
+        mix: { internal_trusted: 1, tool_output: 3, external_untrusted: 1, user: 1 }, snapshot: ["k-0003"] },
+    ],
+  },
+  incident: {
+    session: "s-7f3a91", call: "c-0003", tool: "approve_settlement",
+    candidates: [
+      { chunk: "k-0003", origin: "external_untrusted", source: "mcp://insurer/read_claim_document#D-1003-2",
+        depth: 0, recency: 2, channel: "claimant_upload" },
+    ],
+    contextChunks: 7, untrusted: 1, replay: "REPRODUCED", coverage: [4, 4],
+  },
+  chain: { links: 1284, head: "9c41e0b7d2a85f13e6c9047ab1d3f28e5a7c6b90d14e2f3a8b5c7d9e0f1a2b3c" },
+  attestation: {
+    agents: [
+      { agent: "claims-triage-v1", scope: ["payment", "external send", "PII read"], tools: 4,
+        blast: "INR 5,00,000 per policy", gated: 2, consequential: 9 },
+    ],
+  },
+  dryrun: [
+    { session: "s-a0d27c", tool: "approve_settlement", would: "gate", rule: "R-1 untrusted x payment", cause: "claimant_upload in context" },
+    { session: "s-7f3a91", tool: "approve_settlement", would: "gate", rule: "R-1 untrusted x payment", cause: "claimant_upload in context" },
+  ],
+};
+
+const ICONS = {
+  sessions: '<path d="M3 5h18M3 12h18M3 19h18"/>',
+  detail: '<path d="M12 3v18M5 8h7M12 16h7"/><circle cx="5" cy="8" r="2"/><circle cx="19" cy="16" r="2"/>',
+  incident: '<path d="M12 3 2 21h20L12 3zM12 10v5M12 18v.01"/>',
+  chain: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
+  attestation: '<path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3z"/><path d="m9 12 2 2 4-4"/>',
+  dryrun: '<circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4z"/>',
+};
+const VIEWS = [
+  ["sessions", "Sessions"], ["detail", "Session Detail"], ["incident", "Incident View"],
+  ["chain", "Chain Integrity"], ["attestation", "Attestation"], ["dryrun", "Dry-Run Report"],
+];
+const ORIGIN_COLORS = {
+  user: "#60a5fa", internal_trusted: "#34d399", tool_output: "#a78bfa", external_untrusted: "#fbbf24",
+};
+let current = "sessions";
+let selectedSession = "s-7f3a91";
+
+const banner = '<div class="banner">Preview build: sample data for UI review. Live figures will be queried from the trace DB at request time.</div>';
+const pill = (v) => `<span class="pill p-${v}">${v}</span>`;
+
+function sessions() {
+  const s = DATA.sessions;
+  const calls = s.reduce((a, x) => a + x.calls, 0);
+  const gates = s.reduce((a, x) => a + x.gates, 0);
+  return `${banner}<h1>Sessions</h1><p class="sub">Agent sessions observed through the proxy.</p>
+  <div class="grid kpis">
+    <div class="card kpi"><div class="label">Sessions</div><div class="value">${s.length}</div><div class="note">single-task sessions</div></div>
+    <div class="card kpi"><div class="label">Tool calls</div><div class="value">${calls}</div><div class="note">one CallRecord each</div></div>
+    <div class="card kpi"><div class="label">Gated</div><div class="value">${gates} <small style="font-size:14px;color:var(--muted)">of ${calls} calls</small></div><div class="note">numerator / denominator</div></div>
+    <div class="card kpi"><div class="label">Chain</div><div class="value" style="color:var(--ok)">intact</div><div class="note">${DATA.chain.links} links</div></div>
+  </div>
+  <div class="card"><div class="table-wrap"><table>
+    <thead><tr><th>Session</th><th>Claim</th><th>Agent</th><th>Principal</th><th>Started</th><th>Calls</th><th>Gates</th><th>Chain</th></tr></thead>
+    <tbody>${s.map(x => `<tr class="click" data-s="${x.id}">
+      <td class="mono">${x.id}</td><td>${x.claim}</td><td>${x.agent}</td><td>${x.principal}</td>
+      <td>${x.started}</td><td>${x.calls}</td><td>${x.gates ? pill("gate") + " " + x.gates : "0"}</td><td>${pill("ok").replace(">ok<", ">intact<")}</td></tr>`).join("")}
+    </tbody></table></div></div>`;
+}
+
+function mixBar(mix) {
+  const total = Object.values(mix).reduce((a, b) => a + b, 0);
+  return `<div class="bar">${Object.entries(mix).map(([k, v]) =>
+    `<span style="width:${(v / total) * 100}%;background:${ORIGIN_COLORS[k]}" title="${k}: ${v}"></span>`).join("")}</div>`;
+}
+
+function detail() {
+  if (!DATA.detail[selectedSession]) selectedSession = "s-7f3a91";
+  const evs = DATA.detail[selectedSession];
+  const s = DATA.sessions.find(x => x.id === selectedSession);
+  return `${banner}<h1>Session Detail</h1><p class="sub"><span class="mono">${s.id}</span> &middot; claim ${s.claim} &middot; ${s.principal} &middot; model openai/gpt-oss-20b</p>
+  <div class="grid two">
+    <div class="card"><h2>Trace timeline</h2><div class="timeline">
+      ${evs.map(e => `<div class="ev ${e.verdict}">
+        <div class="ev-head"><b class="mono">${e.tool}</b>${pill(e.verdict)}<span class="mono" style="color:var(--faint)">${e.t}</span></div>
+        <div class="ev-meta">rule ${e.rule} &middot; taint snapshot [${e.snapshot.join(", ")}]</div>
+        ${mixBar(e.mix)}
+      </div>`).join("")}
+    </div>
+    <div class="legend">${Object.entries(ORIGIN_COLORS).map(([k, c]) => `<span><i style="background:${c}"></i>${k}</span>`).join("")}</div>
+    </div>
+    <div class="card"><h2>Session record</h2><dl class="kv">
+      <dt>Agent</dt><dd>${s.agent}</dd><dt>Principal</dt><dd>${s.principal}</dd>
+      <dt>Started</dt><dd>${s.started}</dd><dt>Tool calls</dt><dd>${evs.length}</dd>
+      <dt>Gated</dt><dd>${evs.filter(e => e.verdict === "gate").length} of ${evs.length}</dd>
+      <dt>System prompt</dt><dd class="mono">sha256 4be1c0f2...a91d</dd>
+      <dt>Chain</dt><dd>${pill("ok").replace(">ok<", ">intact<")}</dd>
+    </dl></div>
+  </div>`;
+}
+
+function incident() {
+  const i = DATA.incident;
+  return `${banner}<h1>Incident View</h1><p class="sub">Gated call <span class="mono">${i.call}</span> (${i.tool}) in session <span class="mono">${i.session}</span>.</p>
+  <div class="grid kpis">
+    <div class="card kpi"><div class="label">Narrowing</div><div class="value">${i.untrusted} <small style="font-size:14px;color:var(--muted)">of ${i.contextChunks} chunks</small></div><div class="note">untrusted candidates in context</div></div>
+    <div class="card kpi"><div class="label">Replay verdict</div><div class="value" style="color:var(--ok)">${i.replay}</div><div class="note">bounded replay, one re-execution</div></div>
+    <div class="card kpi"><div class="label">Coverage</div><div class="value">${i.coverage[0]} / ${i.coverage[1]}</div><div class="note">declared tools observed</div></div>
+  </div>
+  <div class="card"><h2>Ranked candidates (depth, then recency)</h2><div class="table-wrap"><table>
+    <thead><tr><th>Rank</th><th>Chunk</th><th>Origin</th><th>Channel</th><th>Depth</th><th>Recency</th><th>Source</th></tr></thead>
+    <tbody>${i.candidates.map((c, n) => `<tr><td>${n + 1}</td><td class="mono">${c.chunk}</td><td>${pill("warn").replace(">warn<", ">" + c.origin + "<")}</td>
+      <td>${c.channel}</td><td>${c.depth}</td><td>${c.recency}</td><td class="mono">${c.source}</td></tr>`).join("")}</tbody>
+  </table></div></div>`;
+}
+
+function chain() {
+  return `${banner}<h1>Chain Integrity</h1><p class="sub">SHA-256 hash chain over every trace record.</p>
+  <div class="grid two">
+    <div class="card"><h2>Verification</h2>
+      <p style="color:var(--muted);margin-top:0">Walks every link from genesis and recomputes record and link hashes.</p>
+      <button class="btn" id="verify">Run verification</button>
+      <div class="verify-out" id="vout"></div>
+    </div>
+    <div class="card"><h2>Chain head</h2><dl class="kv">
+      <dt>Links</dt><dd>${DATA.chain.links}</dd>
+      <dt>Head link hash</dt><dd class="mono" style="word-break:break-all">${DATA.chain.head}</dd>
+      <dt>Digest</dt><dd>SHA-256, domain separated</dd>
+      <dt>Storage</dt><dd>SQLite, append-only triggers</dd>
+    </dl></div>
+  </div>`;
+}
+
+function attestation() {
+  return `${banner}<h1>Attestation</h1><p class="sub">Authority scope and gate rate per agent.</p>
+  <div class="row"><span style="color:var(--muted)">Window</span><select><option>Last 24 hours</option><option>Last 7 days</option></select></div>
+  ${DATA.attestation.agents.map(a => `<div class="grid two">
+    <div class="card"><h2>${a.agent}</h2><dl class="kv">
+      <dt>Authority scope</dt><dd>${a.scope.map(x => `<span class="pill p-neutral">${x}</span>`).join(" ")}</dd>
+      <dt>Declared tools</dt><dd>${a.tools}</dd>
+      <dt>Blast radius</dt><dd>${a.blast}</dd>
+    </dl></div>
+    <div class="card"><h2>Gate rate</h2>
+      <div class="frac">${a.gated} <small>of ${a.consequential} consequential calls gated</small></div>
+      <div class="hbar"><span style="width:${(a.gated / a.consequential) * 100}%"></span></div>
+    </div></div>`).join("")}`;
+}
+
+function dryrun() {
+  return `${banner}<h1>Dry-Run Report</h1><p class="sub">Verdicts that would have been enforced. Use this to size enforcement before enabling it.</p>
+  <div class="card"><div class="table-wrap"><table>
+    <thead><tr><th>Session</th><th>Tool</th><th>Would be</th><th>Rule</th><th>Cause</th></tr></thead>
+    <tbody>${DATA.dryrun.map(d => `<tr><td class="mono">${d.session}</td><td class="mono">${d.tool}</td><td>${pill(d.would)}</td><td>${d.rule}</td><td>${d.cause}</td></tr>`).join("")}</tbody>
+  </table></div></div>`;
+}
+
+const RENDER = { sessions, detail, incident, chain, attestation, dryrun };
+
+function render() {
+  document.getElementById("nav").innerHTML = VIEWS.map(([k, label]) =>
+    `<button data-v="${k}" class="${k === current ? "active" : ""}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS[k]}</svg>${label}</button>`).join("");
+  document.getElementById("view").innerHTML = RENDER[current]();
+  document.querySelectorAll("nav button").forEach(b => b.onclick = () => { current = b.dataset.v; go(); });
+  document.querySelectorAll("tr[data-s]").forEach(r => r.onclick = () => { selectedSession = r.dataset.s; current = "detail"; go(); });
+  const v = document.getElementById("verify");
+  if (v) v.onclick = () => {
+    document.getElementById("vout").innerHTML = `<div class="big-status"><span class="dot" style="background:var(--ok)"></span>Chain intact</div>
+      <p style="color:var(--muted)">${DATA.chain.links} links checked, first break: none, unchained records: 0</p>`;
+  };
+}
+function go() { location.hash = current; render(); }
+
+const params = new URLSearchParams(location.search);
+if (params.get("view") && RENDER[params.get("view")]) current = params.get("view");
+else if (RENDER[location.hash.slice(1)]) current = location.hash.slice(1);
+if (params.get("theme")) document.documentElement.dataset.theme = params.get("theme");
+document.getElementById("theme").onclick = () => {
+  const r = document.documentElement;
+  r.dataset.theme = r.dataset.theme === "light" ? "dark" : "light";
+};
+render();
+</script>
+</body>
+</html>
