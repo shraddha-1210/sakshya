@@ -1,0 +1,7 @@
+# Each dependency is justified in the milestone report that added it.
+pydantic==2.13.5
+pytest==9.1.1
+pytest-cov==7.1.0  # TESTING.md §8 coverage target on trust-critical modules
+mcp==2.2.0  # M2: MCP tool server + agent client (the protocol SAKSHYA sits on)
+httpx==0.28.1  # M2: agent HTTP client for the OpenAI-compatible LLM endpoint (approved)
+ruff==0.16.6

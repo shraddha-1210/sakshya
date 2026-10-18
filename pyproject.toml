@@ -1,0 +1,21 @@
+[project]
+name = "sakshya"
+version = "0.0.0"
+requires-python = ">=3.12"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "ANN"]
+ignore = ["ANN401"]
+
+[tool.ruff.lint.per-file-ignores]
+"sakshya/tests/*" = ["ANN"]
+
+[tool.pytest.ini_options]
+testpaths = ["sakshya/tests"]
+markers = [
+    "behavioural: calls the real LLM; slow and costs API calls. Select with -m behavioural; never skipped by default.",
+]

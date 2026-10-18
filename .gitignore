@@ -1,0 +1,11 @@
+.env
+*.db
+*.db-wal
+*.db-shm
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+var/
+.coverage
+.claude/
+docs/CLAUDE_CODE_PROMPT.md

@@ -1,0 +1,3 @@
+# The frozen reference agent is hashed byte for byte (T-AGENT-01); never convert its line endings.
+sakshya/demo/agent.py -text
+*.png binary
