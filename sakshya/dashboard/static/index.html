@@ -3,135 +3,200 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SAKSHYA Dashboard</title>
+<title>SAKSHYA</title>
 <style>
 :root {
-  --bg: #0d0a17; --bg-2: #141022; --panel: #1a1530; --panel-2: #221b3d;
-  --line: #2f2652; --text: #ece8fb; --muted: #9d94c2; --faint: #6c638f;
-  --violet: #8b5cf6; --violet-2: #a78bfa; --violet-3: #c4b5fd;
-  --ok: #34d399; --warn: #fbbf24; --bad: #f87171;
-  --ok-bg: rgba(52,211,153,.12); --warn-bg: rgba(251,191,36,.12); --bad-bg: rgba(248,113,113,.12);
-  --glow: rgba(139,92,246,.28);
+  --bg: #f7f5fb;
+  --surface: #ffffff;
+  --surface-2: #faf9fd;
+  --tint: #f1edfc;
+  --tint-2: #e6dffa;
+  --line: #ece8f4;
+  --line-2: #e0daee;
+  --text: #1e1a2b;
+  --muted: #736c88;
+  --faint: #a29cb5;
+  --accent: #6e56cf;
+  --accent-ink: #5a43b8;
+  --ok: #23845e;   --ok-bg: #e5f5ee;
+  --hold: #a3600f; --hold-bg: #fcf0dd;
+  --bad: #b8404f;  --bad-bg: #fbe8eb;
+  --o-user: #7ea6e6; --o-int: #62bd99; --o-tool: #a897ef; --o-ext: #eea463;
+  --shadow: 0 1px 2px rgba(40, 28, 80, .04), 0 6px 24px rgba(40, 28, 80, .05);
+  --radius: 18px;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --sans: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --mono: "Cascadia Mono", "SF Mono", Consolas, monospace;
 }
-:root[data-theme="light"] {
-  --bg: #f6f4fd; --bg-2: #efebfb; --panel: #ffffff; --panel-2: #f3f0fc;
-  --line: #e0daf5; --text: #1d1636; --muted: #5f5688; --faint: #8c84ad;
-  --violet: #7c3aed; --violet-2: #6d28d9; --violet-3: #5b21b6;
-  --ok: #059669; --warn: #b45309; --bad: #dc2626;
-  --ok-bg: rgba(5,150,105,.1); --warn-bg: rgba(180,83,9,.1); --bad-bg: rgba(220,38,38,.1);
-  --glow: rgba(124,58,237,.14);
+:root[data-theme="dark"] {
+  --bg: #13111a;
+  --surface: #1b1825;
+  --surface-2: #1f1c2a;
+  --tint: #262038;
+  --tint-2: #31294a;
+  --line: #2a2638;
+  --line-2: #352f47;
+  --text: #ece9f6;
+  --muted: #a39cb9;
+  --faint: #6f6886;
+  --accent: #a693f5;
+  --accent-ink: #bcadff;
+  --ok: #5fd0a2;   --ok-bg: rgba(95, 208, 162, .12);
+  --hold: #f0b45c; --hold-bg: rgba(240, 180, 92, .12);
+  --bad: #f08a98;  --bad-bg: rgba(240, 138, 152, .12);
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 28px rgba(0, 0, 0, .25);
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; }
-body {
-  background: var(--bg); color: var(--text);
-  font: 14px/1.5 "Segoe UI", system-ui, -apple-system, sans-serif;
-  min-height: 100vh;
-}
-body::before {
-  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
-  background:
-    radial-gradient(600px 400px at 85% -10%, var(--glow), transparent 70%),
-    radial-gradient(500px 360px at 10% 110%, var(--glow), transparent 70%);
-}
-.app { position: relative; z-index: 1; display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
-aside {
-  background: var(--bg-2); border-right: 1px solid var(--line);
-  padding: 22px 14px; display: flex; flex-direction: column; gap: 4px;
-}
-.brand { display: flex; align-items: center; gap: 10px; padding: 0 10px 20px; }
-.brand-mark {
-  width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center;
-  background: linear-gradient(135deg, var(--violet), #5b21b6); color: #fff; font-weight: 700;
-  box-shadow: 0 0 18px var(--glow);
-}
-.brand b { font-size: 16px; letter-spacing: .14em; }
-.brand small { display: block; color: var(--faint); font-size: 11px; letter-spacing: .02em; }
+body { background: var(--bg); color: var(--text); font: 13.5px/1.55 var(--sans); -webkit-font-smoothing: antialiased; }
+button, input, select { font: inherit; color: inherit; }
+.app { display: grid; grid-template-columns: 232px 1fr; min-height: 100vh; }
+
+/* sidebar */
+aside { padding: 26px 16px; display: flex; flex-direction: column; gap: 2px; position: sticky; top: 0; height: 100vh; }
+.brand { display: flex; align-items: center; gap: 11px; padding: 0 10px 28px; }
+.mark { width: 30px; height: 30px; border-radius: 10px; background: var(--accent); display: grid; place-items: center; }
+.mark svg { width: 16px; height: 16px; }
+.brand-name { font-family: var(--serif); font-size: 19px; letter-spacing: .01em; }
+.nav-label { font-size: 11px; color: var(--faint); padding: 16px 12px 6px; letter-spacing: .04em; }
 nav button {
-  width: 100%; text-align: left; background: none; border: 0; color: var(--muted);
-  padding: 9px 12px; border-radius: 8px; font: inherit; cursor: pointer;
-  display: flex; align-items: center; gap: 10px;
+  width: 100%; display: flex; align-items: center; gap: 11px; padding: 8px 12px; border: 0; border-radius: 11px;
+  background: none; color: var(--muted); cursor: pointer; text-align: left;
 }
-nav button:hover { background: var(--panel); color: var(--text); }
-nav button.active { background: var(--panel-2); color: var(--text); box-shadow: inset 3px 0 0 var(--violet); }
-nav svg { width: 16px; height: 16px; flex: none; }
-.side-foot { margin-top: auto; padding: 12px; color: var(--faint); font-size: 12px; }
-.theme-btn {
-  margin-top: 8px; width: 100%; padding: 7px; border-radius: 8px; border: 1px solid var(--line);
-  background: var(--panel); color: var(--muted); font: inherit; cursor: pointer;
-}
-main { padding: 26px 32px 48px; min-width: 0; }
-.banner {
-  border: 1px dashed var(--warn); background: var(--warn-bg); color: var(--warn);
-  padding: 8px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 20px;
-}
-h1 { font-size: 22px; margin: 0 0 4px; font-weight: 600; }
-.sub { color: var(--muted); margin: 0 0 22px; }
-.grid { display: grid; gap: 14px; }
-.kpis { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 18px; }
-.card {
-  background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px;
-}
-.kpi .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
-.kpi .value { font-size: 26px; font-weight: 600; margin-top: 4px; font-variant-numeric: tabular-nums; }
-.kpi .note { color: var(--faint); font-size: 12px; }
-.card h2 { font-size: 14px; margin: 0 0 12px; font-weight: 600; }
+nav button:hover { color: var(--text); background: var(--surface); }
+nav button.active { background: var(--tint); color: var(--accent-ink); font-weight: 600; }
+nav svg { width: 17px; height: 17px; flex: none; }
+nav .count { margin-left: auto; font-size: 11.5px; color: var(--faint); font-weight: 500; }
+nav button.active .count { color: var(--accent); }
+.side-foot { margin-top: auto; padding: 14px 12px; border-radius: 14px; background: var(--surface); box-shadow: var(--shadow); font-size: 12px; color: var(--muted); }
+.side-foot b { color: var(--text); font-weight: 600; }
+.live { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--ok); margin-right: 6px; box-shadow: 0 0 0 3px var(--ok-bg); }
+
+/* main */
+main { padding: 26px 36px 60px 12px; min-width: 0; }
+.topbar { display: flex; align-items: center; gap: 12px; margin-bottom: 26px; }
+.crumbs { color: var(--faint); font-size: 12.5px; }
+.crumbs b { color: var(--muted); font-weight: 500; }
+.spacer { flex: 1; }
+.search { display: flex; align-items: center; gap: 8px; background: var(--surface); border-radius: 12px; padding: 7px 12px; width: 260px; box-shadow: var(--shadow); }
+.search svg { width: 15px; height: 15px; color: var(--faint); }
+.search input { border: 0; outline: 0; background: none; width: 100%; }
+.icon-btn { width: 34px; height: 34px; border-radius: 11px; border: 0; background: var(--surface); box-shadow: var(--shadow); cursor: pointer; display: grid; place-items: center; color: var(--muted); }
+.icon-btn svg { width: 16px; height: 16px; }
+.preview-tag { font-size: 11.5px; color: var(--accent-ink); background: var(--tint); padding: 4px 10px; border-radius: 999px; }
+
+.head { display: flex; align-items: flex-end; gap: 16px; margin-bottom: 22px; flex-wrap: wrap; }
+h1 { font-family: var(--serif); font-weight: 400; font-size: 34px; letter-spacing: -.01em; margin: 0; line-height: 1.1; }
+.lede { color: var(--muted); margin: 6px 0 0; max-width: 620px; }
+.seg { display: inline-flex; background: var(--surface); border-radius: 12px; padding: 3px; box-shadow: var(--shadow); }
+.seg button { border: 0; background: none; padding: 6px 13px; border-radius: 9px; cursor: pointer; color: var(--muted); font-size: 12.5px; }
+.seg button.on { background: var(--tint); color: var(--accent-ink); font-weight: 600; }
+
+.card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px 22px; }
+.card h3 { margin: 0 0 3px; font-size: 13px; font-weight: 600; }
+.card .hint { color: var(--faint); font-size: 12px; margin: 0 0 14px; }
+.board { columns: 3 300px; column-gap: 18px; }
+.board .card { break-inside: avoid; margin-bottom: 18px; display: inline-block; width: 100%; }
+.grid { display: grid; gap: 18px; }
+.g2 { grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); }
+.g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.g4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.stack { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+
+.big { font-family: var(--serif); font-size: 40px; line-height: 1; letter-spacing: -.02em; font-variant-numeric: lining-nums tabular-nums; }
+.big small { font-family: var(--sans); font-size: 13px; color: var(--muted); letter-spacing: 0; margin-left: 4px; }
+.stat-label { color: var(--muted); font-size: 12.5px; margin-bottom: 8px; }
+.stat-note { color: var(--faint); font-size: 12px; margin-top: 8px; }
+.hero { background: linear-gradient(160deg, var(--tint) 0%, var(--surface) 70%); }
+.hero-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 18px; }
+.hero-row div { font-size: 12px; color: var(--muted); }
+.hero-row b { display: block; font-family: var(--serif); font-weight: 400; font-size: 24px; color: var(--text); }
+
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 500; white-space: nowrap; }
+.chip::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: .8; }
+.c-allow, .c-intact, .c-approved, .c-REPRODUCED { color: var(--ok); background: var(--ok-bg); }
+.c-held, .c-gate, .c-dry, .c-DIVERGED, .c-returned { color: var(--hold); background: var(--hold-bg); }
+.c-rejected, .c-incident, .c-UNREPRODUCIBLE { color: var(--bad); background: var(--bad-bg); }
+.c-plain { color: var(--accent-ink); background: var(--tint); }
+.c-plain::before { display: none; }
+.tag { display: inline-block; padding: 2px 9px; border-radius: 8px; background: var(--surface-2); border: 1px solid var(--line); font-size: 12px; color: var(--muted); margin: 0 4px 4px 0; }
+
 table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
-th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
-th { color: var(--faint); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
-tbody tr:hover { background: var(--panel-2); }
-tbody tr.click { cursor: pointer; }
-.table-wrap { overflow-x: auto; }
-.mono { font-family: Consolas, "Cascadia Mono", monospace; font-size: 12.5px; }
-.pill { display: inline-block; padding: 1px 9px; border-radius: 999px; font-size: 12px; font-weight: 500; }
-.p-allow, .p-ok { color: var(--ok); background: var(--ok-bg); }
-.p-gate, .p-warn { color: var(--warn); background: var(--warn-bg); }
-.p-block, .p-bad { color: var(--bad); background: var(--bad-bg); }
-.p-neutral { color: var(--violet-2); background: var(--glow); }
-.timeline { position: relative; padding-left: 22px; }
-.timeline::before { content: ""; position: absolute; left: 6px; top: 4px; bottom: 4px; width: 2px; background: var(--line); }
-.ev { position: relative; padding: 0 0 18px; }
-.ev::before {
-  content: ""; position: absolute; left: -21px; top: 5px; width: 12px; height: 12px; border-radius: 50%;
-  background: var(--panel); border: 2px solid var(--violet);
-}
-.ev.gate::before { border-color: var(--warn); background: var(--warn); }
-.ev-head { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-.ev-meta { color: var(--muted); font-size: 12.5px; margin-top: 3px; }
-.bar { display: flex; height: 8px; border-radius: 6px; overflow: hidden; background: var(--panel-2); margin-top: 6px; max-width: 320px; }
-.bar span { display: block; }
-.legend { display: flex; gap: 14px; flex-wrap: wrap; color: var(--muted); font-size: 12px; margin-top: 8px; }
-.legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 5px; vertical-align: middle; }
-.two { grid-template-columns: 1.4fr 1fr; }
-.btn {
-  background: linear-gradient(135deg, var(--violet), #6d28d9); color: #fff; border: 0;
-  padding: 9px 16px; border-radius: 8px; font: inherit; font-weight: 500; cursor: pointer;
-  box-shadow: 0 0 16px var(--glow);
-}
-.btn.ghost { background: var(--panel-2); color: var(--text); border: 1px solid var(--line); box-shadow: none; }
-.verify-out { margin-top: 14px; }
-.big-status { display: flex; align-items: center; gap: 12px; font-size: 18px; font-weight: 600; }
-.dot { width: 12px; height: 12px; border-radius: 50%; }
-.frac { font-size: 26px; font-weight: 600; font-variant-numeric: tabular-nums; }
-.frac small { font-size: 14px; color: var(--muted); font-weight: 400; }
-.hbar { height: 10px; border-radius: 6px; background: var(--panel-2); overflow: hidden; margin-top: 8px; }
-.hbar span { display: block; height: 100%; background: linear-gradient(90deg, var(--violet), var(--violet-3)); }
-.kv { display: grid; grid-template-columns: 160px 1fr; gap: 6px 12px; }
-.kv dt { color: var(--muted); }
-.kv dd { margin: 0; }
-select {
-  background: var(--panel-2); color: var(--text); border: 1px solid var(--line); border-radius: 8px;
-  padding: 6px 10px; font: inherit;
-}
-.row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
-@media (max-width: 860px) {
+th { text-align: left; font-weight: 500; color: var(--faint); font-size: 12px; padding: 0 12px 10px; white-space: nowrap; }
+td { padding: 11px 12px; border-top: 1px solid var(--line); white-space: nowrap; }
+tbody tr { transition: background .12s; }
+tbody tr.go { cursor: pointer; }
+tbody tr.go:hover { background: var(--surface-2); }
+tbody tr.sel { background: var(--tint); }
+.tw { overflow-x: auto; margin: 0 -12px; }
+.mono { font-family: var(--mono); font-size: 12px; }
+.dim { color: var(--muted); }
+.faint { color: var(--faint); }
+.num { text-align: right; }
+
+.filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.filters button { border: 0; background: var(--surface); box-shadow: var(--shadow); padding: 6px 14px; border-radius: 999px; cursor: pointer; color: var(--muted); font-size: 12.5px; }
+.filters button.on { background: var(--accent); color: #fff; }
+.filters button span { opacity: .7; margin-left: 4px; }
+
+.bars { display: flex; align-items: flex-end; gap: 4px; height: 120px; }
+.bars .col { flex: 1; display: flex; flex-direction: column-reverse; gap: 2px; height: 100%; }
+.bars .col i { display: block; border-radius: 4px; background: var(--tint-2); }
+.bars .col i.h { background: var(--o-ext); }
+.axis { display: flex; justify-content: space-between; color: var(--faint); font-size: 11px; margin-top: 8px; }
+.stackbar { display: flex; height: 10px; border-radius: 999px; overflow: hidden; gap: 2px; }
+.stackbar span { display: block; height: 100%; }
+.legend { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; margin-top: 14px; font-size: 12.5px; }
+.legend div { display: flex; align-items: center; gap: 8px; }
+.legend i { width: 9px; height: 9px; border-radius: 3px; flex: none; }
+.legend b { margin-left: auto; font-weight: 600; font-variant-numeric: tabular-nums; }
+.meter { height: 8px; border-radius: 999px; background: var(--tint); overflow: hidden; }
+.meter span { display: block; height: 100%; border-radius: 999px; background: var(--accent); }
+.list-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-top: 1px solid var(--line); }
+.list-row:first-of-type { border-top: 0; }
+.list-row .grow { flex: 1; min-width: 0; }
+.list-row .sub { color: var(--faint); font-size: 12px; }
+.minibar { width: 90px; height: 6px; border-radius: 999px; background: var(--tint); overflow: hidden; }
+.minibar span { display: block; height: 100%; background: var(--accent); border-radius: 999px; }
+
+.kv { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 9px 14px; margin: 0; }
+.kv dt { color: var(--faint); }
+.kv dd { margin: 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+
+.tl { position: relative; }
+.step { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 12px; padding-bottom: 18px; position: relative; }
+.step::before { content: ""; position: absolute; left: 13px; top: 30px; bottom: 0; width: 2px; background: var(--line); }
+.step:last-child::before { display: none; }
+.dotn { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--tint); color: var(--accent-ink); font-size: 12px; font-weight: 600; }
+.step.held .dotn { background: var(--hold-bg); color: var(--hold); }
+.step.rej .dotn { background: var(--bad-bg); color: var(--bad); }
+.step-card { background: var(--surface-2); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; }
+.step-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.step-top b { font-family: var(--mono); font-size: 12.5px; font-weight: 600; }
+.step-meta { color: var(--muted); font-size: 12px; margin-top: 6px; display: flex; gap: 14px; flex-wrap: wrap; }
+.step .stackbar { margin-top: 10px; height: 6px; max-width: 280px; }
+
+.btn { border: 0; background: var(--accent); color: #fff; padding: 9px 18px; border-radius: 12px; cursor: pointer; font-weight: 600; }
+.btn:disabled { opacity: .6; cursor: default; }
+.progress { height: 6px; border-radius: 999px; background: var(--tint); overflow: hidden; margin: 16px 0 10px; }
+.progress span { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 999px; transition: width .08s linear; }
+.seqs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.seqs ol { margin: 6px 0 0; padding-left: 18px; font-family: var(--mono); font-size: 12px; line-height: 2; }
+.seqs ol li.miss { color: var(--bad); text-decoration: line-through; }
+select { background: var(--surface); border: 0; box-shadow: var(--shadow); border-radius: 11px; padding: 7px 12px; }
+.empty { color: var(--faint); padding: 20px 0; text-align: center; }
+
+@media (max-width: 1100px) { .g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .g3 { grid-template-columns: 1fr; } }
+@media (max-width: 900px) {
   .app { grid-template-columns: 1fr; }
-  aside { flex-direction: row; overflow-x: auto; padding: 10px 16px; border-right: 0; border-bottom: 1px solid var(--line); }
-  .brand, .side-foot { display: none; }
+  aside { position: static; height: auto; flex-direction: row; overflow-x: auto; padding: 12px 16px; }
+  .brand, .nav-label, .side-foot { display: none; }
   nav { display: flex; gap: 4px; }
   nav button { white-space: nowrap; }
-  main { padding: 18px 16px 40px; }
-  .two { grid-template-columns: 1fr; }
+  main { padding: 16px 16px 48px; }
+  .g2, .g4 { grid-template-columns: 1fr; }
+  .search { display: none; }
+  h1 { font-size: 28px; }
 }
 </style>
 </head>
@@ -139,217 +204,515 @@ select {
 <div class="app">
   <aside>
     <div class="brand">
-      <div class="brand-mark">S</div>
-      <div><b>SAKSHYA</b><small>evidence and authority control</small></div>
+      <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M12 3 4.5 6v5.5c0 4.6 3.1 8.2 7.5 9.5 4.4-1.3 7.5-4.9 7.5-9.5V6L12 3z"/></svg></div>
+      <div class="brand-name">Sakshya</div>
     </div>
     <nav id="nav"></nav>
     <div class="side-foot">
-      Agent: claims-triage-v1<br>Mode: enforce
-      <button class="theme-btn" id="theme">Toggle theme</button>
+      <div><span class="live"></span><b>Proxy connected</b></div>
+      <div style="margin-top:6px">claims-prod &middot; enforce mode</div>
+      <div class="faint" style="margin-top:2px">since 18 Oct, 10:00 IST</div>
     </div>
   </aside>
-  <main id="view"></main>
+  <main>
+    <div class="topbar">
+      <div class="crumbs">claims-prod / <b id="crumb"></b></div>
+      <div class="spacer"></div>
+      <span class="preview-tag">Preview data</span>
+      <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" placeholder="Search session, claim or principal"></label>
+      <button class="icon-btn" id="theme" title="Toggle theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></button>
+    </div>
+    <div id="view"></div>
+  </main>
 </div>
 
 <script>
-// PREVIEW DATA. Static sample values for the UI preview. The live dashboard (M7)
-// replaces every figure below with queries against the trace DB at request time.
-const DATA = {
-  sessions: [
-    { id: "s-7f3a91", agent: "claims-triage-v1", principal: "adjuster-7", claim: "C-1003",
-      started: "2026-10-18 11:42:07", calls: 4, gates: 1, chain: "intact" },
-    { id: "s-52c0de", agent: "claims-triage-v1", principal: "adjuster-7", claim: "C-1001",
-      started: "2026-10-18 11:31:55", calls: 4, gates: 0, chain: "intact" },
-    { id: "s-19be44", agent: "claims-triage-v1", principal: "adjuster-3", claim: "C-1002",
-      started: "2026-10-18 11:20:13", calls: 3, gates: 0, chain: "intact" },
-    { id: "s-a0d27c", agent: "claims-triage-v1", principal: "adjuster-3", claim: "C-1003",
-      started: "2026-10-18 10:58:40", calls: 4, gates: 1, chain: "intact" },
-    { id: "s-e61b08", agent: "claims-triage-v1", principal: "adjuster-7", claim: "C-1001",
-      started: "2026-10-18 10:44:02", calls: 4, gates: 0, chain: "intact" },
-  ],
-  detail: {
-    "s-7f3a91": [
-      { t: "11:42:08.114", tool: "read_claim_document", verdict: "allow", rule: "R-0 not consequential",
-        mix: { internal_trusted: 1, tool_output: 1, external_untrusted: 1, user: 1 }, snapshot: ["k-0003"] },
-      { t: "11:42:10.502", tool: "get_policy_record", verdict: "allow", rule: "R-0 not consequential",
-        mix: { internal_trusted: 1, tool_output: 2, external_untrusted: 1, user: 1 }, snapshot: ["k-0003"] },
-      { t: "11:42:13.877", tool: "approve_settlement", verdict: "gate", rule: "R-1 untrusted x payment",
-        mix: { internal_trusted: 1, tool_output: 2, external_untrusted: 1, user: 1 }, snapshot: ["k-0003"] },
-      { t: "11:42:16.240", tool: "send_email", verdict: "allow", rule: "R-2 recipient on record",
-        mix: { internal_trusted: 1, tool_output: 3, external_untrusted: 1, user: 1 }, snapshot: ["k-0003"] },
-    ],
-  },
-  incident: {
-    session: "s-7f3a91", call: "c-0003", tool: "approve_settlement",
-    candidates: [
-      { chunk: "k-0003", origin: "external_untrusted", source: "mcp://insurer/read_claim_document#D-1003-2",
-        depth: 0, recency: 2, channel: "claimant_upload" },
-    ],
-    contextChunks: 7, untrusted: 1, replay: "REPRODUCED", coverage: [4, 4],
-  },
-  chain: { links: 1284, head: "9c41e0b7d2a85f13e6c9047ab1d3f28e5a7c6b90d14e2f3a8b5c7d9e0f1a2b3c" },
-  attestation: {
-    agents: [
-      { agent: "claims-triage-v1", scope: ["payment", "external send", "PII read"], tools: 4,
-        blast: "INR 5,00,000 per policy", gated: 2, consequential: 9 },
-    ],
-  },
-  dryrun: [
-    { session: "s-a0d27c", tool: "approve_settlement", would: "gate", rule: "R-1 untrusted x payment", cause: "claimant_upload in context" },
-    { session: "s-7f3a91", tool: "approve_settlement", would: "gate", rule: "R-1 untrusted x payment", cause: "claimant_upload in context" },
-  ],
-};
+// Preview build. All values below come from a seeded generator so the layout can be
+// reviewed with realistic volume. M7 replaces this with queries against the trace DB.
+function mulberry32(a) {
+  return function () {
+    a |= 0; a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const R = mulberry32(181026);
+const ri = (a, b) => a + Math.floor(R() * (b - a + 1));
+const pick = (a) => a[Math.floor(R() * a.length)];
+const hx = (n) => { let s = ""; for (let i = 0; i < n; i++) s += "0123456789abcdef"[Math.floor(R() * 16)]; return s; };
+const inr = (n) => "INR " + n.toLocaleString("en-IN");
+const pad = (n) => String(n).padStart(2, "0");
+const hms = (ms) => { const d = new Date(ms); return `${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}:${pad(d.getUTCSeconds())}`; };
+const hm = (ms) => hms(ms).slice(0, 5);
+const short = (h) => h.slice(0, 8) + "…" + h.slice(-4);
 
-const ICONS = {
-  sessions: '<path d="M3 5h18M3 12h18M3 19h18"/>',
-  detail: '<path d="M12 3v18M5 8h7M12 16h7"/><circle cx="5" cy="8" r="2"/><circle cx="19" cy="16" r="2"/>',
-  incident: '<path d="M12 3 2 21h20L12 3zM12 10v5M12 18v.01"/>',
-  chain: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
-  attestation: '<path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3z"/><path d="m9 12 2 2 4-4"/>',
-  dryrun: '<circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4z"/>',
+// Times are stored as IST wall clock in a UTC Date for display simplicity.
+const DAY = Date.UTC(2026, 9, 18);
+const ENFORCE_AT = DAY + 10 * 3600e3;
+const TOOL_CAT = {
+  read_claim_document: null,
+  get_policy_record: "PII read",
+  approve_settlement: "payment",
+  send_email: "external send",
 };
-const VIEWS = [
-  ["sessions", "Sessions"], ["detail", "Session Detail"], ["incident", "Incident View"],
-  ["chain", "Chain Integrity"], ["attestation", "Attestation"], ["dryrun", "Dry-Run Report"],
+const RULE = { payment: "GATE-PAY", "external send": "GATE-EXT", "PII read": "GATE-PII" };
+const HOUR_W = [.2, .1, .1, .1, .1, .2, .5, .9, 1.7, 2.6, 3, 3.1, 2.7, 2.3, 2.8, 3, 2.9, 2.4, 1.8, 1.2, .8, .6, .4, .3];
+const ADJ = ["adjuster-3", "adjuster-7", "adjuster-12", "adjuster-15", "adjuster-21"];
+const REVIEWERS = ["claims-lead-2", "claims-lead-5", "adjuster-12"];
+
+function sampleHour() {
+  const tot = HOUR_W.reduce((a, b) => a + b, 0);
+  let r = R() * tot;
+  for (let h = 0; h < 24; h++) { r -= HOUR_W[h]; if (r <= 0) return h; }
+  return 23;
+}
+
+let seq = 21406;
+const LINKS = [];
+function link(type, id, at) {
+  const rec = { seq: seq++, type, id, hash: hx(64), at };
+  rec.prev = LINKS.length ? LINKS[LINKS.length - 1].lh : hx(64);
+  rec.lh = hx(64);
+  LINKS.push(rec);
+  return rec;
+}
+
+const starts = Array.from({ length: 68 }, () => DAY + sampleHour() * 3600e3 + ri(0, 3599) * 1e3)
+  .filter((t) => t < DAY + 22 * 3600e3 + 40 * 60e3).sort((a, b) => a - b);
+
+const SESSIONS = starts.map((start, i) => {
+  const fnol = R() < 0.17;
+  const dry = start < ENFORCE_AT;
+  const r = R();
+  let kind = fnol ? (r < 0.72 ? "clean" : "upload") : r < 0.56 ? "clean" : r < 0.69 ? "reject" : r < 0.88 ? "upload" : "injected";
+  if (kind === "injected" && dry) kind = "upload";
+  const claimNo = 1040 + i;
+  const claim = `C-${claimNo}`;
+  const policy = `P-${pick([5, 6, 7])}${pad(ri(1, 99))}`;
+  const claimed = ri(9, 190) * 1000 + pick([0, 0, 500]);
+  const deductible = pick([2000, 2000, 5000, 10000]);
+  const payable = claimed - deductible;
+  const tools = fnol ? ["read_claim_document", "send_email"]
+    : kind === "reject" ? ["read_claim_document", "get_policy_record", "send_email"]
+    : ["read_claim_document", "get_policy_record", "approve_settlement", "send_email"];
+  const intake = ri(1, 2);
+  const uploads = kind === "upload" || kind === "injected" || (kind === "reject" && R() < 0.4) ? ri(1, 3) : 0;
+  const s = {
+    id: "ses_" + hx(8), claim, policy, claimed, payable, kind, dry, start,
+    agent: fnol ? "fnol-intake-v2" : "claims-triage-v1",
+    principal: fnol ? "intake-queue" : pick(ADJ),
+    model: "openai/gpt-oss-20b", fp: dry ? "fp_3b8c" : "fp_41d2",
+    calls: [], chunks: [], records: [],
+  };
+  let t = start;
+  const chunk = (origin, uri, redacted) => {
+    const c = { id: "chk_" + hx(8), origin, uri, hash: hx(64), at: t, redacted };
+    s.chunks.push(c); s.records.push(link("chunk", c.id, t));
+    return c;
+  };
+  chunk("internal_trusted", "llm://system-prompt", false);
+  chunk("user", "llm://messages/1", false);
+  let stopped = false;
+  tools.forEach((tool) => {
+    if (stopped) return;
+    t += ri(1400, 5200);
+    const cat = TOOL_CAT[tool];
+    const ext = s.chunks.filter((c) => c.origin === "external_untrusted");
+    const gate = cat && ext.length > 0;
+    const call = {
+      id: "call_" + hx(8), tool, at: t, cat, args: hx(64),
+      verdict: gate ? "gate" : "allow",
+      rule: gate ? RULE[cat] : cat ? "ALLOW-TRUSTED" : "ALLOW-NC",
+      snapshot: ext.map((c) => c.id),
+      mix: ["user", "internal_trusted", "tool_output", "external_untrusted"].map((o) => s.chunks.filter((c) => c.origin === o).length),
+      overhead: (0.4 + R() * 0.9).toFixed(2), latency: ri(9, 64),
+    };
+    if (gate && !dry) {
+      const bad = kind === "injected" && tool !== "get_policy_record";
+      call.review = { by: pick(REVIEWERS), wait: ri(2, 41), outcome: bad ? "rejected" : kind === "injected" || R() < 0.92 ? "approved" : "returned" };
+    }
+    s.calls.push(call);
+    s.records.push(link("call", call.id, t));
+    s.records.push(link("decision", "dec_" + hx(8), t));
+    if (call.review && call.review.outcome !== "approved") {
+      if (tool === "get_policy_record") stopped = true;
+      return;
+    }
+    t += call.latency;
+    if (tool === "read_claim_document") {
+      chunk("tool_output", `mcp://insurer/read_claim_document/${claim}`, false);
+      for (let d = 1; d <= intake; d++) chunk("internal_trusted", `mcp://insurer/read_claim_document/${claim}#D-${claimNo}-${d}`, R() < 0.3);
+      for (let d = 1; d <= uploads; d++) {
+        const c = chunk("external_untrusted", `mcp://insurer/read_claim_document/${claim}#D-${claimNo}-${intake + d}`, R() < 0.5);
+        c.channel = "claimant_upload";
+      }
+    } else {
+      chunk("tool_output", `mcp://insurer/${tool}/${tool === "get_policy_record" ? policy : claim}`, tool === "get_policy_record");
+    }
+  });
+  s.end = t;
+  s.held = s.calls.filter((c) => c.verdict === "gate").length;
+  const settle = s.calls.find((c) => c.tool === "approve_settlement");
+  s.settled = settle && (settle.verdict === "allow" || (settle.review && settle.review.outcome === "approved") || dry) ? payable : 0;
+  s.withheld = settle && settle.review && settle.review.outcome === "rejected" ? ri(60, 240) * 1000 : 0;
+  s.outcome = kind === "injected" ? "incident" : dry && s.held ? "dry" : s.held ? "held" : "allow";
+  return s;
+});
+
+const ALL_CALLS = SESSIONS.flatMap((s) => s.calls.map((c) => ({ ...c, s })));
+const ALL_CHUNKS = SESSIONS.flatMap((s) => s.chunks);
+const CONSEQ = ALL_CALLS.filter((c) => c.cat && !c.s.dry);
+const HELD = CONSEQ.filter((c) => c.verdict === "gate");
+const INCIDENTS = SESSIONS.filter((s) => s.kind === "injected").reverse();
+const DRY = SESSIONS.filter((s) => s.dry);
+const REPLAY = ["REPRODUCED", "REPRODUCED", "DIVERGED", "REPRODUCED", "UNREPRODUCIBLE", "REPRODUCED"];
+INCIDENTS.forEach((s, i) => { s.replay = REPLAY[i % REPLAY.length]; });
+
+const WEEK = [
+  { d: "12 Oct", sessions: 41, conseq: 96, held: 22, inc: 1 },
+  { d: "13 Oct", sessions: 58, conseq: 141, held: 35, inc: 2 },
+  { d: "14 Oct", sessions: 62, conseq: 150, held: 31, inc: 0 },
+  { d: "15 Oct", sessions: 55, conseq: 133, held: 29, inc: 1 },
+  { d: "16 Oct", sessions: 60, conseq: 146, held: 38, inc: 3 },
+  { d: "17 Oct", sessions: 37, conseq: 84, held: 17, inc: 0 },
+  { d: "18 Oct", sessions: SESSIONS.length, conseq: CONSEQ.length, held: HELD.length, inc: INCIDENTS.length },
 ];
-const ORIGIN_COLORS = {
-  user: "#60a5fa", internal_trusted: "#34d399", tool_output: "#a78bfa", external_untrusted: "#fbbf24",
+const VERIFY_RUNS = Array.from({ length: 8 }, (_, i) => ({ at: DAY + (22 - i) * 3600e3, links: LINKS[LINKS.length - 1].seq + 1 - i * ri(28, 44), ms: ri(180, 260) }));
+
+// ---------------------------------------------------------------------------
+const ICON = {
+  overview: '<rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/>',
+  sessions: '<path d="M4 6h16M4 12h16M4 18h10"/>',
+  detail: '<circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M6 8.5v3a3 3 0 0 0 3 3h6a3 3 0 0 1 3 3"/>',
+  incidents: '<path d="M12 4 3 20h18L12 4z"/><path d="M12 10v4M12 17v.01"/>',
+  chain: '<path d="M9.5 14.5 14.5 9.5"/><path d="M11 6.5 12.5 5a4 4 0 0 1 5.7 5.7L16.5 12.4M13 17.5 11.5 19a4 4 0 0 1-5.7-5.7l1.7-1.7"/>',
+  attestation: '<path d="M12 3 5 6v5.5c0 4.3 2.9 7.7 7 9 4.1-1.3 7-4.7 7-9V6l-7-3z"/><path d="m9 12 2 2 4-4"/>',
+  dryrun: '<circle cx="12" cy="12" r="8.5"/><path d="M10.5 9v6l4.5-3-4.5-3z"/>',
 };
-let current = "sessions";
-let selectedSession = "s-7f3a91";
+const NAV = [
+  ["Monitor", [["overview", "Overview"], ["sessions", "Sessions", SESSIONS.length], ["detail", "Session detail"], ["incidents", "Incidents", INCIDENTS.length]]],
+  ["Integrity", [["chain", "Chain integrity"]]],
+  ["Governance", [["attestation", "Attestation"], ["dryrun", "Dry-run report"]]],
+];
+const TITLES = { overview: "Overview", sessions: "Sessions", detail: "Session detail", incidents: "Incidents", chain: "Chain integrity", attestation: "Attestation", dryrun: "Dry-run report" };
+const ORIGINS = [["user", "--o-user"], ["internal_trusted", "--o-int"], ["tool_output", "--o-tool"], ["external_untrusted", "--o-ext"]];
+const OUTCOME_LABEL = { allow: "clear", held: "held", incident: "incident", dry: "dry-run" };
 
-const banner = '<div class="banner">Preview build: sample data for UI review. Live figures will be queried from the trace DB at request time.</div>';
-const pill = (v) => `<span class="pill p-${v}">${v}</span>`;
+const state = { view: "overview", session: INCIDENTS[0].id, incident: INCIDENTS[0].id, filter: "all", q: "", window: "24h" };
+const chip = (cls, label) => `<span class="chip c-${cls}">${label ?? cls}</span>`;
+const stackbar = (counts) => {
+  const tot = counts.reduce((a, b) => a + b, 0) || 1;
+  return `<div class="stackbar">${counts.map((v, i) => v ? `<span style="width:${(v / tot) * 100}%;background:var(${ORIGINS[i][1]})" title="${ORIGINS[i][0]}: ${v}"></span>` : "").join("")}</div>`;
+};
+const head = (title, lede, right = "") => `<div class="head"><div><h1>${title}</h1><p class="lede">${lede}</p></div><div class="spacer"></div>${right}</div>`;
 
-function sessions() {
-  const s = DATA.sessions;
-  const calls = s.reduce((a, x) => a + x.calls, 0);
-  const gates = s.reduce((a, x) => a + x.gates, 0);
-  return `${banner}<h1>Sessions</h1><p class="sub">Agent sessions observed through the proxy.</p>
-  <div class="grid kpis">
-    <div class="card kpi"><div class="label">Sessions</div><div class="value">${s.length}</div><div class="note">single-task sessions</div></div>
-    <div class="card kpi"><div class="label">Tool calls</div><div class="value">${calls}</div><div class="note">one CallRecord each</div></div>
-    <div class="card kpi"><div class="label">Gated</div><div class="value">${gates} <small style="font-size:14px;color:var(--muted)">of ${calls} calls</small></div><div class="note">numerator / denominator</div></div>
-    <div class="card kpi"><div class="label">Chain</div><div class="value" style="color:var(--ok)">intact</div><div class="note">${DATA.chain.links} links</div></div>
-  </div>
-  <div class="card"><div class="table-wrap"><table>
-    <thead><tr><th>Session</th><th>Claim</th><th>Agent</th><th>Principal</th><th>Started</th><th>Calls</th><th>Gates</th><th>Chain</th></tr></thead>
-    <tbody>${s.map(x => `<tr class="click" data-s="${x.id}">
-      <td class="mono">${x.id}</td><td>${x.claim}</td><td>${x.agent}</td><td>${x.principal}</td>
-      <td>${x.started}</td><td>${x.calls}</td><td>${x.gates ? pill("gate") + " " + x.gates : "0"}</td><td>${pill("ok").replace(">ok<", ">intact<")}</td></tr>`).join("")}
-    </tbody></table></div></div>`;
-}
-
-function mixBar(mix) {
-  const total = Object.values(mix).reduce((a, b) => a + b, 0);
-  return `<div class="bar">${Object.entries(mix).map(([k, v]) =>
-    `<span style="width:${(v / total) * 100}%;background:${ORIGIN_COLORS[k]}" title="${k}: ${v}"></span>`).join("")}</div>`;
-}
-
-function detail() {
-  if (!DATA.detail[selectedSession]) selectedSession = "s-7f3a91";
-  const evs = DATA.detail[selectedSession];
-  const s = DATA.sessions.find(x => x.id === selectedSession);
-  return `${banner}<h1>Session Detail</h1><p class="sub"><span class="mono">${s.id}</span> &middot; claim ${s.claim} &middot; ${s.principal} &middot; model openai/gpt-oss-20b</p>
-  <div class="grid two">
-    <div class="card"><h2>Trace timeline</h2><div class="timeline">
-      ${evs.map(e => `<div class="ev ${e.verdict}">
-        <div class="ev-head"><b class="mono">${e.tool}</b>${pill(e.verdict)}<span class="mono" style="color:var(--faint)">${e.t}</span></div>
-        <div class="ev-meta">rule ${e.rule} &middot; taint snapshot [${e.snapshot.join(", ")}]</div>
-        ${mixBar(e.mix)}
-      </div>`).join("")}
+function overview() {
+  const hours = Array.from({ length: 24 }, (_, h) => {
+    const cs = ALL_CALLS.filter((c) => new Date(c.at).getUTCHours() === h);
+    return [cs.filter((c) => c.verdict !== "gate").length, cs.filter((c) => c.verdict === "gate").length];
+  });
+  const peak = Math.max(...hours.map(([a, b]) => a + b), 1);
+  const originCounts = ORIGINS.map(([o]) => ALL_CHUNKS.filter((c) => c.origin === o).length);
+  const reviewed = HELD.filter((c) => c.review);
+  const byOutcome = (o) => reviewed.filter((c) => c.review.outcome === o).length;
+  const avgWait = Math.round(reviewed.reduce((a, c) => a + c.review.wait, 0) / reviewed.length);
+  const toolCounts = Object.keys(TOOL_CAT).map((t) => [t, ALL_CALLS.filter((c) => c.tool === t).length]);
+  const maxTool = Math.max(...toolCounts.map((x) => x[1]));
+  const princ = [...new Set(SESSIONS.map((s) => s.principal))].map((p) => [p, SESSIONS.filter((s) => s.principal === p).length]).sort((a, b) => b[1] - a[1]);
+  const settledN = SESSIONS.filter((s) => s.settled).length;
+  const settledSum = SESSIONS.reduce((a, s) => a + s.settled, 0);
+  const withheld = SESSIONS.reduce((a, s) => a + s.withheld, 0);
+  const byRule = ["GATE-PAY", "GATE-EXT", "GATE-PII"].map((r) => [r, HELD.filter((c) => c.rule === r).length]);
+  return head("Good evening", "Everything the claims agents did today, and every decision SAKSHYA took on their behalf.",
+    `<div class="seg"><button class="on">Today</button><button>7 days</button><button>30 days</button></div>`) +
+  `<div class="board">
+    <div class="card hero">
+      <div class="stat-label">Today across ${new Set(SESSIONS.map((s) => s.agent)).size} agents</div>
+      <div class="big">${ALL_CALLS.length}<small>tool calls observed</small></div>
+      <div class="hero-row">
+        <div><b>${SESSIONS.length}</b>sessions</div>
+        <div><b>${HELD.length}</b>held for review</div>
+        <div><b>${INCIDENTS.length}</b>incidents</div>
+      </div>
     </div>
-    <div class="legend">${Object.entries(ORIGIN_COLORS).map(([k, c]) => `<span><i style="background:${c}"></i>${k}</span>`).join("")}</div>
+    <div class="card">
+      <h3>Activity by hour</h3><p class="hint">Tool calls, with held calls in amber</p>
+      <div class="bars">${hours.map(([a, b]) => `<div class="col" title="${a + b} calls, ${b} held"><i style="height:${(a / peak) * 100}%"></i>${b ? `<i class="h" style="height:${(b / peak) * 100}%"></i>` : ""}</div>`).join("")}</div>
+      <div class="axis"><span>00</span><span>06</span><span>12</span><span>18</span><span>23</span></div>
     </div>
-    <div class="card"><h2>Session record</h2><dl class="kv">
-      <dt>Agent</dt><dd>${s.agent}</dd><dt>Principal</dt><dd>${s.principal}</dd>
-      <dt>Started</dt><dd>${s.started}</dd><dt>Tool calls</dt><dd>${evs.length}</dd>
-      <dt>Gated</dt><dd>${evs.filter(e => e.verdict === "gate").length} of ${evs.length}</dd>
-      <dt>System prompt</dt><dd class="mono">sha256 4be1c0f2...a91d</dd>
-      <dt>Chain</dt><dd>${pill("ok").replace(">ok<", ">intact<")}</dd>
-    </dl></div>
+    <div class="card">
+      <h3>Gate rate</h3><p class="hint">Consequential calls under enforcement</p>
+      <div class="big">${HELD.length}<small>of ${CONSEQ.length} held</small></div>
+      <div class="meter" style="margin:14px 0 16px"><span style="width:${(HELD.length / CONSEQ.length) * 100}%"></span></div>
+      ${byRule.map(([r, n]) => `<div class="list-row"><span class="mono grow">${r}</span><span class="dim">${n}</span></div>`).join("")}
+    </div>
+    <div class="card">
+      <h3>Where context came from</h3><p class="hint">${ALL_CHUNKS.length} chunks ingested, hashed, never stored</p>
+      ${stackbar(originCounts)}
+      <div class="legend">${ORIGINS.map(([o, v], i) => `<div><i style="background:var(${v})"></i>${o.replace("_", " ")}<b>${originCounts[i]}</b></div>`).join("")}</div>
+    </div>
+    <div class="card">
+      <h3>Recent incidents</h3><p class="hint">Untrusted content in context at a payment attempt</p>
+      ${INCIDENTS.slice(0, 4).map((s) => `<div class="list-row go" data-inc="${s.id}" style="cursor:pointer"><div class="grow"><div>${s.claim} <span class="faint">&middot; ${s.principal}</span></div><div class="sub">${hm(s.start)} IST &middot; replay ${s.replay.toLowerCase()}</div></div>${chip("rejected", "payment rejected")}</div>`).join("")}
+    </div>
+    <div class="card">
+      <h3>Chain</h3><p class="hint">Last verified ${hm(VERIFY_RUNS[0].at)} IST</p>
+      <div style="display:flex;align-items:center;gap:10px">${chip("intact")}<span class="dim">${(LINKS[LINKS.length - 1].seq + 1).toLocaleString("en-IN")} links</span></div>
+      <div class="mono faint" style="margin-top:12px;word-break:break-all">${LINKS[LINKS.length - 1].lh}</div>
+    </div>
+    <div class="card">
+      <h3>Human review</h3><p class="hint">Held calls resolved by reviewers</p>
+      <div class="g3 grid" style="gap:10px">
+        <div><div class="big" style="font-size:28px">${byOutcome("approved")}</div><div class="stat-note">approved</div></div>
+        <div><div class="big" style="font-size:28px">${byOutcome("rejected")}</div><div class="stat-note">rejected</div></div>
+        <div><div class="big" style="font-size:28px">${avgWait}m</div><div class="stat-note">avg wait</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Settlements</h3><p class="hint">Payments that went through, and payments stopped</p>
+      <div class="big" style="font-size:30px">${inr(settledSum)}</div>
+      <div class="stat-note">${settledN} claims settled</div>
+      <div class="list-row" style="margin-top:12px"><span class="grow dim">Withheld after review</span><b>${inr(withheld)}</b></div>
+    </div>
+    <div class="card">
+      <h3>Tools</h3><p class="hint">Calls per declared tool</p>
+      ${toolCounts.map(([t, n]) => `<div class="list-row"><span class="mono grow">${t}</span><div class="minibar"><span style="width:${(n / maxTool) * 100}%"></span></div><span class="dim num" style="width:28px">${n}</span></div>`).join("")}
+    </div>
+    <div class="card">
+      <h3>Principals</h3><p class="hint">Sessions started on whose behalf</p>
+      ${princ.map(([p, n]) => `<div class="list-row"><span class="grow">${p}</span><span class="dim">${n}</span></div>`).join("")}
+    </div>
   </div>`;
 }
 
-function incident() {
-  const i = DATA.incident;
-  return `${banner}<h1>Incident View</h1><p class="sub">Gated call <span class="mono">${i.call}</span> (${i.tool}) in session <span class="mono">${i.session}</span>.</p>
-  <div class="grid kpis">
-    <div class="card kpi"><div class="label">Narrowing</div><div class="value">${i.untrusted} <small style="font-size:14px;color:var(--muted)">of ${i.contextChunks} chunks</small></div><div class="note">untrusted candidates in context</div></div>
-    <div class="card kpi"><div class="label">Replay verdict</div><div class="value" style="color:var(--ok)">${i.replay}</div><div class="note">bounded replay, one re-execution</div></div>
-    <div class="card kpi"><div class="label">Coverage</div><div class="value">${i.coverage[0]} / ${i.coverage[1]}</div><div class="note">declared tools observed</div></div>
-  </div>
-  <div class="card"><h2>Ranked candidates (depth, then recency)</h2><div class="table-wrap"><table>
-    <thead><tr><th>Rank</th><th>Chunk</th><th>Origin</th><th>Channel</th><th>Depth</th><th>Recency</th><th>Source</th></tr></thead>
-    <tbody>${i.candidates.map((c, n) => `<tr><td>${n + 1}</td><td class="mono">${c.chunk}</td><td>${pill("warn").replace(">warn<", ">" + c.origin + "<")}</td>
-      <td>${c.channel}</td><td>${c.depth}</td><td>${c.recency}</td><td class="mono">${c.source}</td></tr>`).join("")}</tbody>
+function sessions() {
+  const counts = { all: SESSIONS.length, allow: 0, held: 0, incident: 0, dry: 0 };
+  SESSIONS.forEach((s) => counts[s.outcome]++);
+  const q = state.q.toLowerCase();
+  const rows = SESSIONS.slice().reverse().filter((s) => (state.filter === "all" || s.outcome === state.filter) &&
+    (!q || [s.id, s.claim, s.principal, s.agent].some((v) => v.toLowerCase().includes(q))));
+  return head("Sessions", "One row per agent task. Click a session to open its full trace.") +
+  `<div class="filters">${[["all", "All"], ["allow", "Clear"], ["held", "Held"], ["incident", "Incidents"], ["dry", "Dry-run"]].map(([k, l]) =>
+    `<button data-f="${k}" class="${state.filter === k ? "on" : ""}">${l}<span>${counts[k]}</span></button>`).join("")}</div>
+  <div class="card"><div class="tw"><table>
+    <thead><tr><th>Session</th><th>Claim</th><th>Agent</th><th>Principal</th><th>Started</th><th>Duration</th><th class="num">Calls</th><th class="num">Held</th><th>Status</th><th>Chain</th></tr></thead>
+    <tbody>${rows.map((s) => `<tr class="go" data-s="${s.id}">
+      <td class="mono">${s.id}</td><td>${s.claim}</td><td class="dim">${s.agent}</td><td>${s.principal}</td>
+      <td class="dim">${hms(s.start)}</td><td class="dim">${((s.end - s.start) / 1000).toFixed(1)}s</td>
+      <td class="num">${s.calls.length}</td><td class="num">${s.held || "<span class='faint'>0</span>"}</td>
+      <td>${chip(s.outcome, OUTCOME_LABEL[s.outcome])}</td><td>${chip("intact")}</td></tr>`).join("") ||
+      `<tr><td colspan="10" class="empty">No sessions match.</td></tr>`}</tbody>
   </table></div></div>`;
 }
 
-function chain() {
-  return `${banner}<h1>Chain Integrity</h1><p class="sub">SHA-256 hash chain over every trace record.</p>
-  <div class="grid two">
-    <div class="card"><h2>Verification</h2>
-      <p style="color:var(--muted);margin-top:0">Walks every link from genesis and recomputes record and link hashes.</p>
-      <button class="btn" id="verify">Run verification</button>
-      <div class="verify-out" id="vout"></div>
+function detail() {
+  const s = SESSIONS.find((x) => x.id === state.session);
+  const untrusted = s.chunks.filter((c) => c.origin === "external_untrusted").length;
+  return head(`${s.claim}`, `<span class="mono">${s.id}</span> &middot; ${s.agent} on behalf of ${s.principal} &middot; ${hms(s.start)} IST`, chip(s.outcome, OUTCOME_LABEL[s.outcome])) +
+  `<div class="grid g4" style="margin-bottom:18px">
+    <div class="card"><div class="stat-label">Tool calls</div><div class="big">${s.calls.length}</div></div>
+    <div class="card"><div class="stat-label">Held</div><div class="big">${s.held}<small>of ${s.calls.filter((c) => c.cat).length} consequential</small></div></div>
+    <div class="card"><div class="stat-label">Context chunks</div><div class="big">${s.chunks.length}<small>${untrusted} untrusted</small></div></div>
+    <div class="card"><div class="stat-label">Trace records</div><div class="big">${s.records.length}<small>seq ${s.records[0].seq} to ${s.records[s.records.length - 1].seq}</small></div></div>
+  </div>
+  <div class="grid g2">
+    <div class="card"><h3>Call timeline</h3><p class="hint">Each call with the origin mix of the context it was made in</p><div class="tl">
+      ${s.calls.map((c, i) => `<div class="step ${c.verdict === "gate" ? (c.review && c.review.outcome === "rejected" ? "rej" : "held") : ""}">
+        <div class="dotn">${i + 1}</div>
+        <div class="step-card">
+          <div class="step-top"><b>${c.tool}</b>${chip(c.verdict === "gate" ? (s.dry ? "dry" : "held") : "allow", c.verdict === "gate" ? (s.dry ? "would gate" : "held") : "allowed")}
+            ${c.review ? chip(c.review.outcome, `${c.review.outcome} by ${c.review.by}`) : ""}<span class="spacer"></span><span class="mono faint">${hms(c.at)}</span></div>
+          <div class="step-meta"><span>rule <span class="mono">${c.rule}</span></span>${c.cat ? `<span>${c.cat}</span>` : ""}<span>args <span class="mono">${short(c.args)}</span></span><span>+${c.overhead} ms proxy</span></div>
+          ${stackbar(c.mix)}
+          <div class="step-meta">${c.snapshot.length ? `<span>taint snapshot <span class="mono">${c.snapshot.join(", ")}</span></span>` : "<span class='faint'>no untrusted content in context</span>"}</div>
+        </div></div>`).join("")}
+    </div></div>
+    <div class="stack">
+      <div class="card"><h3>Session</h3><p class="hint">Captured by the proxy and the LLM pass-through</p><dl class="kv">
+        <dt>Claim</dt><dd>${s.claim} &middot; ${s.policy}</dd><dt>Claimed</dt><dd>${inr(s.claimed)}</dd>
+        <dt>Model</dt><dd class="mono">${s.model}</dd><dt>Fingerprint</dt><dd class="mono">${s.fp}</dd>
+        <dt>System prompt</dt><dd class="mono">${short(LINKS[s.records[0].seq - 21406].hash)}</dd>
+        <dt>Mode</dt><dd>${s.dry ? "dry-run" : "enforce"}</dd><dt>Chain</dt><dd>${chip("intact")}</dd>
+      </dl></div>
+      <div class="card"><h3>Context chunks</h3><p class="hint">Hashes and pointers only</p><div class="tw"><table>
+        <thead><tr><th>Chunk</th><th>Origin</th><th>Source</th></tr></thead>
+        <tbody>${s.chunks.map((c) => `<tr><td class="mono">${c.id}</td><td><span class="legend" style="display:inline-flex;margin:0"><i style="background:var(${ORIGINS.find((o) => o[0] === c.origin)[1]});width:8px;height:8px;border-radius:3px;display:inline-block;margin-right:6px"></i></span>${c.origin.replace("_", " ")}${c.redacted ? ` <span class="tag">redacted</span>` : ""}</td><td class="mono dim">${c.uri.split("/").pop()}</td></tr>`).join("")}</tbody>
+      </table></div></div>
     </div>
-    <div class="card"><h2>Chain head</h2><dl class="kv">
-      <dt>Links</dt><dd>${DATA.chain.links}</dd>
-      <dt>Head link hash</dt><dd class="mono" style="word-break:break-all">${DATA.chain.head}</dd>
-      <dt>Digest</dt><dd>SHA-256, domain separated</dd>
-      <dt>Storage</dt><dd>SQLite, append-only triggers</dd>
-    </dl></div>
+  </div>
+  <div class="card" style="margin-top:18px"><h3>Trace records</h3><p class="hint">Exactly what was written to the chain for this session</p><div class="tw"><table>
+    <thead><tr><th>Seq</th><th>Type</th><th>Record</th><th>Record hash</th><th>Link hash</th><th>Written</th></tr></thead>
+    <tbody>${s.records.map((r) => `<tr><td class="mono">${r.seq}</td><td>${chip("plain", r.type)}</td><td class="mono">${r.id}</td><td class="mono dim">${short(r.hash)}</td><td class="mono dim">${short(r.lh)}</td><td class="mono faint">${hms(r.at)}</td></tr>`).join("")}</tbody>
+  </table></div></div>`;
+}
+
+function incidents() {
+  const s = INCIDENTS.find((x) => x.id === state.incident);
+  const gated = s.calls.find((c) => c.tool === "approve_settlement");
+  const ctx = gated.mix.reduce((a, b) => a + b, 0);
+  const cands = s.chunks.filter((c) => gated.snapshot.includes(c.id)).slice().reverse();
+  const orig = s.calls.map((c) => c.tool);
+  const rep = s.replay === "DIVERGED" ? orig.slice(0, 2).concat(["send_email"]) : orig;
+  return head("Incidents", "Sessions where untrusted content was in context when the agent tried to move money.") +
+  `<div class="grid g2">
+    <div class="stack">
+      <div class="grid g3">
+        <div class="card"><div class="stat-label">Narrowed to</div><div class="big">${cands.length}<small>of ${ctx} chunks</small></div><div class="stat-note">${(ctx / cands.length).toFixed(1)}x smaller search space</div></div>
+        <div class="card"><div class="stat-label">Replay</div><div style="margin:6px 0 4px">${chip(s.replay)}</div><div class="stat-note">${s.replay === "UNREPRODUCIBLE" ? "model fingerprint changed since capture" : "one bounded re-execution"}</div></div>
+        <div class="card"><div class="stat-label">Coverage</div><div class="big">4<small>of 4 tools</small></div><div class="stat-note">no undeclared egress</div></div>
+      </div>
+      <div class="card"><h3>Ranked candidates</h3><p class="hint">Untrusted chunks from the taint snapshot of <span class="mono">${gated.id}</span>, by depth then recency</p><div class="tw"><table>
+        <thead><tr><th>#</th><th>Chunk</th><th>Channel</th><th>Depth</th><th>Ingested</th><th>Source</th><th>Content hash</th></tr></thead>
+        <tbody>${cands.map((c, i) => `<tr><td>${i + 1}</td><td class="mono">${c.id}</td><td>${chip("held", c.channel)}</td><td>0</td><td class="mono dim">${hms(c.at)}</td><td class="mono dim">${c.uri.split("#")[1]}</td><td class="mono faint">${short(c.hash)}</td></tr>`).join("")}</tbody>
+      </table></div></div>
+      <div class="card"><h3>Replay comparison</h3><p class="hint">Tool-call sequence at capture and on re-execution</p>
+        <div class="seqs"><div><div class="stat-label">Captured</div><ol>${orig.map((t) => `<li>${t}</li>`).join("")}</ol></div>
+        <div><div class="stat-label">Replay</div>${s.replay === "UNREPRODUCIBLE" ? `<p class="dim" style="margin-top:6px">Not run. Captured with <span class="mono">${s.fp}</span>, provider now reports <span class="mono">fp_52a7</span>.</p>` : `<ol>${rep.map((t, i) => `<li class="${t !== orig[i] ? "miss" : ""}">${t}</li>`).join("")}</ol>`}</div></div>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="card"><h3>Gated call</h3><p class="hint">${s.claim} &middot; ${s.principal}</p><dl class="kv">
+        <dt>Call</dt><dd class="mono">${gated.id}</dd><dt>Tool</dt><dd class="mono">approve_settlement</dd>
+        <dt>Rule</dt><dd class="mono">${gated.rule}</dd><dt>At</dt><dd>${hms(gated.at)} IST</dd>
+        <dt>Reviewer</dt><dd>${gated.review.by}, after ${gated.review.wait} min</dd><dt>Outcome</dt><dd>${chip("rejected", "payment rejected")}</dd>
+        <dt>Withheld</dt><dd>${inr(s.withheld)}</dd>
+      </dl></div>
+      <div class="card"><h3>All incidents</h3><p class="hint">Today</p><div class="tw"><table>
+        <thead><tr><th>Claim</th><th>Time</th><th>Replay</th></tr></thead>
+        <tbody>${INCIDENTS.map((x) => `<tr class="go ${x.id === s.id ? "sel" : ""}" data-inc="${x.id}"><td>${x.claim}</td><td class="dim">${hm(x.start)}</td><td>${chip(x.replay)}</td></tr>`).join("")}</tbody>
+      </table></div></div>
+    </div>
+  </div>`;
+}
+
+function chain() {
+  const total = LINKS[LINKS.length - 1].seq + 1;
+  return head("Chain integrity", "Every trace record is linked into a SHA-256 chain. Verification walks it from genesis and recomputes every hash.") +
+  `<div class="grid g2">
+    <div class="stack">
+      <div class="card"><h3>Verify now</h3><p class="hint">Recomputes record and link hashes for all ${total.toLocaleString("en-IN")} links</p>
+        <button class="btn" id="verify">Run verification</button>
+        <div class="progress"><span id="vbar"></span></div>
+        <div id="vout" class="dim">Not run in this view yet.</div>
+      </div>
+      <div class="card"><h3>Latest links</h3><p class="hint">Head of the chain</p><div class="tw"><table>
+        <thead><tr><th>Seq</th><th>Type</th><th>Record</th><th>Prev hash</th><th>Link hash</th><th>Written</th></tr></thead>
+        <tbody>${LINKS.slice(-14).reverse().map((r) => `<tr><td class="mono">${r.seq}</td><td>${chip("plain", r.type)}</td><td class="mono">${r.id}</td><td class="mono faint">${short(r.prev)}</td><td class="mono dim">${short(r.lh)}</td><td class="mono faint">${hms(r.at)}</td></tr>`).join("")}</tbody>
+      </table></div></div>
+    </div>
+    <div class="stack">
+      <div class="card"><h3>Head</h3><p class="hint">Current chain head</p><dl class="kv">
+        <dt>Links</dt><dd>${total.toLocaleString("en-IN")}</dd><dt>Head seq</dt><dd class="mono">${total - 1}</dd>
+        <dt>Link hash</dt><dd class="mono" style="white-space:normal;word-break:break-all">${LINKS[LINKS.length - 1].lh}</dd>
+        <dt>Digest</dt><dd>SHA-256, domain separated</dd><dt>Store</dt><dd>SQLite, append-only triggers</dd>
+      </dl></div>
+      <div class="card"><h3>Verification history</h3><p class="hint">Scheduled hourly</p>
+        ${VERIFY_RUNS.map((v) => `<div class="list-row"><div class="grow"><div>${hm(v.at)} IST</div><div class="sub">${v.links.toLocaleString("en-IN")} links in ${v.ms} ms</div></div>${chip("intact")}</div>`).join("")}
+      </div>
+    </div>
   </div>`;
 }
 
 function attestation() {
-  return `${banner}<h1>Attestation</h1><p class="sub">Authority scope and gate rate per agent.</p>
-  <div class="row"><span style="color:var(--muted)">Window</span><select><option>Last 24 hours</option><option>Last 7 days</option></select></div>
-  ${DATA.attestation.agents.map(a => `<div class="grid two">
-    <div class="card"><h2>${a.agent}</h2><dl class="kv">
-      <dt>Authority scope</dt><dd>${a.scope.map(x => `<span class="pill p-neutral">${x}</span>`).join(" ")}</dd>
-      <dt>Declared tools</dt><dd>${a.tools}</dd>
-      <dt>Blast radius</dt><dd>${a.blast}</dd>
-    </dl></div>
-    <div class="card"><h2>Gate rate</h2>
-      <div class="frac">${a.gated} <small>of ${a.consequential} consequential calls gated</small></div>
-      <div class="hbar"><span style="width:${(a.gated / a.consequential) * 100}%"></span></div>
-    </div></div>`).join("")}`;
+  const days = state.window === "24h" ? WEEK.slice(-1) : WEEK;
+  const sum = (k) => days.reduce((a, d) => a + d[k], 0);
+  const agents = [
+    { name: "claims-triage-v1", tools: ["read_claim_document", "get_policy_record", "approve_settlement", "send_email"], blast: "Up to the policy sum insured per claim (max INR 8,00,000)" },
+    { name: "fnol-intake-v2", tools: ["read_claim_document", "send_email"], blast: "Outbound email to the address on the policy" },
+  ];
+  return head("Attestation", "Control evidence for each agent: what it can do, how often that authority was held, and what happened.",
+    `<div class="seg">${[["24h", "Today"], ["7d", "7 days"]].map(([k, l]) => `<button data-w="${k}" class="${state.window === k ? "on" : ""}">${l}</button>`).join("")}</div>`) +
+  `<div class="grid g4" style="margin-bottom:18px">
+    <div class="card"><div class="stat-label">Sessions</div><div class="big">${sum("sessions")}</div></div>
+    <div class="card"><div class="stat-label">Consequential calls</div><div class="big">${sum("conseq")}</div></div>
+    <div class="card"><div class="stat-label">Gate rate</div><div class="big">${sum("held")}<small>of ${sum("conseq")}</small></div></div>
+    <div class="card"><div class="stat-label">Incidents</div><div class="big">${sum("inc")}</div></div>
+  </div>
+  <div class="grid g2">
+    <div class="stack">${agents.map((a) => {
+      const calls = ALL_CALLS.filter((c) => c.s.agent === a.name);
+      return `<div class="card"><h3>${a.name}</h3><p class="hint">${a.blast}</p><div class="tw"><table>
+        <thead><tr><th>Tool</th><th>Authority</th><th class="num">Calls</th><th class="num">Held</th></tr></thead>
+        <tbody>${a.tools.map((t) => { const cs = calls.filter((c) => c.tool === t); return `<tr><td class="mono">${t}</td><td>${TOOL_CAT[t] ? chip("plain", TOOL_CAT[t]) : "<span class='faint'>read only</span>"}</td><td class="num">${cs.length}</td><td class="num">${cs.filter((c) => c.verdict === "gate" && !c.s.dry).length}</td></tr>`; }).join("")}</tbody>
+      </table></div></div>`;
+    }).join("")}</div>
+    <div class="card"><h3>By day</h3><p class="hint">Held calls over consequential calls</p>
+      ${WEEK.map((d) => `<div class="list-row"><span style="width:56px">${d.d}</span><div class="grow"><div class="meter"><span style="width:${(d.held / d.conseq) * 100}%"></span></div></div><span class="dim num" style="width:70px">${d.held} / ${d.conseq}</span></div>`).join("")}
+    </div>
+  </div>`;
 }
 
 function dryrun() {
-  return `${banner}<h1>Dry-Run Report</h1><p class="sub">Verdicts that would have been enforced. Use this to size enforcement before enabling it.</p>
-  <div class="card"><div class="table-wrap"><table>
-    <thead><tr><th>Session</th><th>Tool</th><th>Would be</th><th>Rule</th><th>Cause</th></tr></thead>
-    <tbody>${DATA.dryrun.map(d => `<tr><td class="mono">${d.session}</td><td class="mono">${d.tool}</td><td>${pill(d.would)}</td><td>${d.rule}</td><td>${d.cause}</td></tr>`).join("")}</tbody>
-  </table></div></div>`;
+  const calls = DRY.flatMap((s) => s.calls.map((c) => ({ ...c, s }))).filter((c) => c.cat);
+  const would = calls.filter((c) => c.verdict === "gate");
+  const settles = calls.filter((c) => c.tool === "approve_settlement");
+  const rules = ["GATE-PAY", "GATE-EXT", "GATE-PII"].map((r) => [r, would.filter((c) => c.rule === r).length]);
+  const maxR = Math.max(...rules.map((r) => r[1]), 1);
+  return head("Dry-run report", "Verdicts recorded but not enforced, from 00:00 to 10:00 IST on 18 Oct. Use this to size enforcement before switching it on.") +
+  `<div class="grid g4" style="margin-bottom:18px">
+    <div class="card"><div class="stat-label">Dry-run sessions</div><div class="big">${DRY.length}</div></div>
+    <div class="card"><div class="stat-label">Would have gated</div><div class="big">${would.length}<small>of ${calls.length} consequential</small></div></div>
+    <div class="card"><div class="stat-label">Settlements needing review</div><div class="big">${settles.filter((c) => c.verdict === "gate").length}<small>of ${settles.length}</small></div></div>
+    <div class="card"><div class="stat-label">Proxy overhead</div><div class="big">${(calls.reduce((a, c) => a + +c.overhead, 0) / calls.length).toFixed(2)}<small>ms per call</small></div></div>
+  </div>
+  <div class="grid g2">
+    <div class="card"><h3>Would-gate calls</h3><p class="hint">The call completed; the verdict was logged only</p><div class="tw"><table>
+      <thead><tr><th>Session</th><th>Claim</th><th>Tool</th><th>Rule</th><th>Time</th><th>Cause</th></tr></thead>
+      <tbody>${would.map((c) => `<tr class="go" data-s="${c.s.id}"><td class="mono">${c.s.id}</td><td>${c.s.claim}</td><td class="mono">${c.tool}</td><td class="mono">${c.rule}</td><td class="dim">${hms(c.at)}</td><td class="dim">${c.snapshot.length} claimant upload${c.snapshot.length > 1 ? "s" : ""} in context</td></tr>`).join("") || `<tr><td colspan="6" class="empty">Nothing would have gated.</td></tr>`}</tbody>
+    </table></div></div>
+    <div class="stack">
+      <div class="card"><h3>By rule</h3><p class="hint">Which authority would have been held</p>
+        ${rules.map(([r, n]) => `<div class="list-row"><span class="mono" style="width:84px">${r}</span><div class="grow"><div class="meter"><span style="width:${(n / maxR) * 100}%"></span></div></div><span class="dim num" style="width:24px">${n}</span></div>`).join("")}
+      </div>
+      <div class="card"><h3>What this costs</h3><p class="hint">Autonomy given up under enforcement</p>
+        <p style="margin:0" class="dim">Any claimant upload taints the session, so even honest claims with photos or receipts would wait for a reviewer before payment, policy lookup and email. ${would.length} calls across ${new Set(would.map((c) => c.s.id)).size} sessions would have waited.</p>
+      </div>
+    </div>
+  </div>`;
 }
 
-const RENDER = { sessions, detail, incident, chain, attestation, dryrun };
+const VIEWS = { overview, sessions, detail, incidents, chain, attestation, dryrun };
 
 function render() {
-  document.getElementById("nav").innerHTML = VIEWS.map(([k, label]) =>
-    `<button data-v="${k}" class="${k === current ? "active" : ""}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS[k]}</svg>${label}</button>`).join("");
-  document.getElementById("view").innerHTML = RENDER[current]();
-  document.querySelectorAll("nav button").forEach(b => b.onclick = () => { current = b.dataset.v; go(); });
-  document.querySelectorAll("tr[data-s]").forEach(r => r.onclick = () => { selectedSession = r.dataset.s; current = "detail"; go(); });
+  document.getElementById("nav").innerHTML = NAV.map(([label, items]) => `<div class="nav-label">${label}</div>` + items.map(([k, l, n]) =>
+    `<button data-v="${k}" class="${state.view === k ? "active" : ""}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICON[k]}</svg>${l}${n ? `<span class="count">${n}</span>` : ""}</button>`).join("")).join("");
+  document.getElementById("crumb").textContent = TITLES[state.view];
+  document.getElementById("view").innerHTML = VIEWS[state.view]();
+  bind();
+}
+function go(view) { state.view = view; history.replaceState(null, "", "#" + view); render(); window.scrollTo(0, 0); }
+function bind() {
+  document.querySelectorAll("nav button").forEach((b) => (b.onclick = () => go(b.dataset.v)));
+  document.querySelectorAll("[data-s]").forEach((r) => (r.onclick = () => { state.session = r.dataset.s; go("detail"); }));
+  document.querySelectorAll("[data-inc]").forEach((r) => (r.onclick = () => { state.incident = r.dataset.inc; go("incidents"); }));
+  document.querySelectorAll("[data-f]").forEach((b) => (b.onclick = () => { state.filter = b.dataset.f; render(); }));
+  document.querySelectorAll("[data-w]").forEach((b) => (b.onclick = () => { state.window = b.dataset.w; render(); }));
   const v = document.getElementById("verify");
   if (v) v.onclick = () => {
-    document.getElementById("vout").innerHTML = `<div class="big-status"><span class="dot" style="background:var(--ok)"></span>Chain intact</div>
-      <p style="color:var(--muted)">${DATA.chain.links} links checked, first break: none, unchained records: 0</p>`;
+    const total = LINKS[LINKS.length - 1].seq + 1;
+    v.disabled = true;
+    let n = 0;
+    const tick = setInterval(() => {
+      n = Math.min(total, n + Math.ceil(total / 24));
+      document.getElementById("vbar").style.width = (n / total) * 100 + "%";
+      document.getElementById("vout").textContent = `Checking link ${n.toLocaleString("en-IN")} of ${total.toLocaleString("en-IN")}…`;
+      if (n >= total) {
+        clearInterval(tick); v.disabled = false;
+        document.getElementById("vout").innerHTML = `${chip("intact", "Chain intact")} <span class="dim" style="margin-left:8px">${total.toLocaleString("en-IN")} links checked &middot; first break: none &middot; unchained records: 0</span>`;
+      }
+    }, 40);
   };
 }
-function go() { location.hash = current; render(); }
-
-const params = new URLSearchParams(location.search);
-if (params.get("view") && RENDER[params.get("view")]) current = params.get("view");
-else if (RENDER[location.hash.slice(1)]) current = location.hash.slice(1);
-if (params.get("theme")) document.documentElement.dataset.theme = params.get("theme");
+document.getElementById("q").oninput = (e) => { state.q = e.target.value; if (state.view !== "sessions") go("sessions"); else render(); document.getElementById("q").focus(); };
 document.getElementById("theme").onclick = () => {
   const r = document.documentElement;
-  r.dataset.theme = r.dataset.theme === "light" ? "dark" : "light";
+  r.dataset.theme = r.dataset.theme === "dark" ? "light" : "dark";
 };
+const params = new URLSearchParams(location.search);
+if (params.get("theme")) document.documentElement.dataset.theme = params.get("theme");
+const start = params.get("view") || location.hash.slice(1);
+if (VIEWS[start]) state.view = start;
 render();
 </script>
 </body>
